@@ -63,12 +63,12 @@ public class CreateCommand extends SubCommand {
             case 7:
                 // z1
                 // x1
-                return Arrays.asList("5", "50");
+                return Arrays.asList("5", "25", "50");
             case 8:
             case 9:
                 // z2
                 // x2
-                return Arrays.asList("-5", "50");
+                return Arrays.asList("-5", "-25", "-50");
             case 10:
                 // Type
                 return Arrays.asList("damage", "break");

@@ -37,10 +37,12 @@ public final class HeightBorder extends JavaPlugin {
     FileConfiguration config;
     public BorderManager borderManager;
     public WorldBorderApi worldBorderApi;
+    private static HeightBorder instance;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
+        instance = this;
         setupConfig();
         borderManager = new BorderManager(this);
         borderManager.setup(config);
