@@ -23,6 +23,9 @@ public class Border implements ConfigurationSerializable {
     // Height at which border stops moving
     double endHeight;
 
+    double displayBorderDistance = 20.0;
+    Boolean displayBorderBasedOnDistance = true;
+
     // top or bottom, stored as "up" or "bottom" in direction
     String direction;
     // velocity
@@ -327,6 +330,50 @@ public class Border implements ConfigurationSerializable {
         }
     }
 
+    public void displayBorderBasedOnDistance(Player player) {
+        // Display the border as particles in the world
+        // get start and end position for the for nested 2d for loops that loop over the border
+        List<Integer> borders = getBorders();
+        int startx = borders.get(0);
+        int endx = borders.get(1);
+        int startz = borders.get(2);
+        int endz = borders.get(3);
+
+        if (!displayBorderParticles) {
+            return;
+        }
+
+        // do not display if lower then y = -200, as this would be unecessary
+        if (currentHeight < -200) {
+            return;
+        }
+
+        World world = pos1.getWorld();
+        // Only this set number of particles is created to reduce client lag
+        // Scale number of particles to the required size
+
+        // Calculate step size and if it would be less than 1 then set it to 1
+        int stepx = 1;
+        int stepz = 1;
+        //
+        for (int x=startx; x < endx + stepx; x = x + stepx) {
+            for (int z=startz; z < endz + stepz; z = z + stepz) {
+
+                double distance = Math.sqrt(Math.pow(x-player.getLocation().getX(),2)+Math.pow(z-player.getLocation().getZ(),2)+Math.pow(currentHeight-player.getLocation().getY(),2));
+                if(distance<displayBorderDistance){
+                    Location currentLoc = new Location(world, x, currentHeight, z);
+                    // Only the same colour is used, because in testing this significantly reduced client side lag
+                    // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
+                    // Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 10.0F);
+                    Particle.DustOptions dustOptions = new Particle.DustOptions(particleColour, 10.0F);
+                    player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0, 0, 0,
+                            1, dustOptions);
+
+                }
+            }
+        }
+    }
+
     private int getStep(int startx, int endx) {
         double checkStepX = (endx - startx) / Math.sqrt(numberOfParticles);
         if (checkStepX < 1) {
@@ -502,7 +549,14 @@ public class Border implements ConfigurationSerializable {
             moveBorder();
         }
         if ((tickCount % displayWait) == 0) {
-            displayBorder();
+            if(displayBorderBasedOnDistance){
+                for(Player player : plugin.getServer().getOnlinePlayers()){
+                    displayBorderBasedOnDistance(player);
+                }
+            }
+            else{
+                displayBorder();
+            }
         }
         checkWarning(plugin);
     }
