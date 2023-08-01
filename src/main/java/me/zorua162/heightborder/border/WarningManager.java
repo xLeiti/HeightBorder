@@ -41,12 +41,11 @@ public class WarningManager {
 
         ComponentBuilder borderInfo;
         TextComponent colour = distanceColour(player, distance, border);
-        //if ((player.getGameMode() == GameMode.SPECTATOR) || (player.getGameMode() == GameMode.CREATIVE)) {
-            //we want more info since border is only displayed visually for a certain distance (better for large borders)
+        if ((player.getGameMode() == GameMode.SPECTATOR) || (player.getGameMode() == GameMode.CREATIVE)) {
             borderInfo = opBorderInfo(distance, border, directionIndicator, colour);
-        //} else {
-            //borderInfo = playerBorderInfo(distance, border, directionIndicator, colour);
-        //}
+        } else {
+            borderInfo = playerBorderInfo(distance, border, directionIndicator, colour);
+        }
         // String borderInfo = directionIndicator + abs(distance);
         return borderInfo;
     }
@@ -110,9 +109,12 @@ public class WarningManager {
 
     private ComponentBuilder playerBorderInfo(Integer distance, Border border, String directionIndicator,
                                               TextComponent colour) {
-        // Colour, arrow
+        // Colour, arrow, distance
+        //we want more info since border is only displayed visually for a certain distance (better for large borders)
         ComponentBuilder borderInfo = new ComponentBuilder();
         borderInfo.append(colour);
+        borderInfo.append(Integer.toString(abs(distance)));
+        borderInfo.append(" ");
         borderInfo.append(directionIndicator);
         return borderInfo;
     }
