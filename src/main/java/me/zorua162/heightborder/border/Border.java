@@ -23,7 +23,7 @@ public class Border implements ConfigurationSerializable {
     // Height at which border stops moving
     double endHeight;
 
-    double displayBorderDistance = 15.0;
+    double displayBorderDistance = 10.0;
     Boolean displayBorderBasedOnDistance = true;
 
     // top or bottom, stored as "up" or "bottom" in direction
@@ -355,39 +355,44 @@ public class Border implements ConfigurationSerializable {
         // Calculate step size and if it would be less than 1 then set it to 1
         int stepx = 1;
         int stepz = 1;
+        double distance;
         //
         for (int x=startx; x < endx + stepx; x = x + stepx) {
             for (int z=startz; z < endz + stepz; z = z + stepz) {
 
+                //We don't need to render particles which we cant see
+                if(world.getBlockAt(x, (int) Math.ceil(currentHeight), z).getType().isSolid()&&world.getBlockAt(x, (int) Math.floor(currentHeight), z).getType().isSolid()){
+                    continue;
+                }
                 //Drawing the dense border when the player is close
-                double distance = Math.sqrt(Math.pow(x-player.getLocation().getX(),2)+Math.pow(z-player.getLocation().getZ(),2)+Math.pow(currentHeight-player.getLocation().getY(),2));
+                distance = Math.sqrt(Math.pow(x+0.5-player.getLocation().getX(),2)+Math.pow(z+0.5-player.getLocation().getZ(),2)+Math.pow(currentHeight-player.getLocation().getY(),2));
                 if(distance<displayBorderDistance){
-                    Location currentLoc = new Location(world, x, currentHeight, z);
+                    Location currentLoc = new Location(world, x+0.5, currentHeight, z+0.5);
                     // Only the same colour is used, because in testing this significantly reduced client side lag
                     // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
                     // Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 10.0F);
-                    Particle.DustOptions dustOptions = new Particle.DustOptions(particleColour, 10.0F);
+                    Particle.DustOptions dustOptions = new Particle.DustOptions(particleColour, 4.0F);
                     player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0, 0, 0,
                             1, dustOptions);
 
                 //Drawing a rough grid when player is further away
-                }else if(distance >=displayBorderDistance && distance < 2*displayBorderDistance){
-                    if(Math.abs(x) % 10 == Math.abs(player.getLocation().getX()) % 10 +5 || Math.abs(z) % 10 == Math.abs(player.getLocation().getZ()) % 10 + 5){
-                        Location currentLoc = new Location(world, x, currentHeight, z);
+                /*}else if((distance >=displayBorderDistance) && (distance < 2.5*displayBorderDistance)){
+                    if(x % 10 == 0 || z % 10 == 0){
+                        Location currentLoc = new Location(world, x+0.5, currentHeight, z+0.5);
                         // Only the same colour is used, because in testing this significantly reduced client side lag
                         // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
                         // Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 10.0F);
                         Particle.DustOptions dustOptions = new Particle.DustOptions(particleColour, 10.0F);
                         player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0, 0, 0,
                                 1, dustOptions);
-                    }
-                }else if(distance >=2*displayBorderDistance && distance < 3*displayBorderDistance){
-                    if(Math.abs(x) % 10 == Math.abs(player.getLocation().getX()) % 10 || Math.abs(z) % 10 == Math.abs(player.getLocation().getZ()) % 10){
-                        Location currentLoc = new Location(world, x, currentHeight, z);
+                    }*/
+                }else if((distance >=displayBorderDistance) && (distance < 10*displayBorderDistance)){
+                    if((x+10) % 20 == 0 || (z+10) % 20 == 0){
+                        Location currentLoc = new Location(world, x+0.5, currentHeight, z+0.5);
                         // Only the same colour is used, because in testing this significantly reduced client side lag
                         // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
                         // Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 10.0F);
-                        Particle.DustOptions dustOptions = new Particle.DustOptions(particleColour, 10.0F);
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(particleColour, 20.0F);
                         player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0, 0, 0,
                                 1, dustOptions);
                     }

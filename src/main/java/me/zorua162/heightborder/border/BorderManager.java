@@ -232,14 +232,14 @@ public class BorderManager {
 
         int endCenter =  Integer.parseInt(args[1]);
 
-        int topEndHeight = endCenter + 5;
+        int topEndHeight = endCenter + 15;
         int bottomEndHeight = endCenter - 5;
 
         int topBorderVelocity = (int) ((topStartHeight - topEndHeight)/timeToFinish);
         int bottomBorderVelocity = (int) ((bottomEndHeight - bottomStartHeight )/timeToFinish);
 
-        Location flpos = new Location(player.getWorld(), -5, topStartHeight, 5);
-        Location brpos = new Location(player.getWorld(), 5, bottomStartHeight, -5);
+        Location flpos = new Location(player.getWorld(), -50, topStartHeight, 50);
+        Location brpos = new Location(player.getWorld(), 50, bottomStartHeight, -50);
 
         createBorder(player, topStartHeight, topEndHeight, "down", topBorderVelocity, flpos,
                 brpos, "damage", true);
