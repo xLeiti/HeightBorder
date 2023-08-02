@@ -372,7 +372,7 @@ public class Border implements ConfigurationSerializable {
 
                 //Drawing a rough grid when player is further away
                 }else if(distance >=displayBorderDistance && distance < 2*displayBorderDistance){
-                    if(x % 10 == 5 || z % 10 == 5){
+                    if(Math.abs(x) % 10 == Math.abs(player.getLocation().getX()) % 10 +5 || Math.abs(z) % 10 == Math.abs(player.getLocation().getZ()) % 10 + 5){
                         Location currentLoc = new Location(world, x, currentHeight, z);
                         // Only the same colour is used, because in testing this significantly reduced client side lag
                         // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
@@ -382,7 +382,7 @@ public class Border implements ConfigurationSerializable {
                                 1, dustOptions);
                     }
                 }else if(distance >=2*displayBorderDistance && distance < 3*displayBorderDistance){
-                    if(x % 10 == 0 || z % 10 == 0){
+                    if(Math.abs(x) % 10 == Math.abs(player.getLocation().getX()) % 10 || Math.abs(z) % 10 == Math.abs(player.getLocation().getZ()) % 10){
                         Location currentLoc = new Location(world, x, currentHeight, z);
                         // Only the same colour is used, because in testing this significantly reduced client side lag
                         // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
