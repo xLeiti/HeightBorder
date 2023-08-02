@@ -238,8 +238,10 @@ public class BorderManager {
         int topBorderVelocity = (int) ((topStartHeight - topEndHeight)/timeToFinish);
         int bottomBorderVelocity = (int) ((bottomEndHeight - bottomStartHeight )/timeToFinish);
 
-        Location flpos = new Location(player.getWorld(), -50, topStartHeight, 50);
-        Location brpos = new Location(player.getWorld(), 50, bottomStartHeight, -50);
+        Double distance = player.getWorld().getWorldBorder().getSize()/2;
+        player.sendMessage("the size is:"+ distance);
+        Location flpos = new Location(player.getWorld(), -distance, topStartHeight, distance);
+        Location brpos = new Location(player.getWorld(), distance, bottomStartHeight, -distance);
 
         createBorder(player, topStartHeight, topEndHeight, "down", topBorderVelocity, flpos,
                 brpos, "damage", true);
