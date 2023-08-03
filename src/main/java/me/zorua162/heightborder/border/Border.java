@@ -3,6 +3,7 @@ package me.zorua162.heightborder.border;
 
 import com.github.yannicklamprecht.worldborder.api.IWorldBorder;
 import com.github.yannicklamprecht.worldborder.api.WorldBorderAction;
+import com.github.yannicklamprecht.worldborder.api.WorldBorderApi;
 import me.zorua162.heightborder.HeightBorder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -23,7 +24,7 @@ public class Border implements ConfigurationSerializable {
     // Height at which border stops moving
     double endHeight;
 
-    double displayBorderDistance = 10.0;
+    double displayBorderDistance = 11.0;
     Boolean displayBorderBasedOnDistance = true;
 
     // top or bottom, stored as "up" or "bottom" in direction
@@ -406,7 +407,7 @@ public class Border implements ConfigurationSerializable {
                         player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0, 0, 0,
                                 1, dustOptions);
                     }*/
-                }else if((distance >=displayBorderDistance) && (distance < 10*displayBorderDistance)){
+                }else if((distance >=displayBorderDistance) && (distance < 100)){
                     if((((x+10) % 20 == 0)&&(z % 2 == 0)) || (((z+10) % 20 == 0)&&(x % 2 == 0))){
                         Location currentLoc = new Location(world, x, currentHeight, z);
                         // Only the same colour is used, because in testing this significantly reduced client side lag
@@ -630,7 +631,7 @@ public class Border implements ConfigurationSerializable {
         for (Player player: players) {
 
             if (direction.equals("down")) {
-                if (player.getLocation().getY() + 1 > currentHeight) {
+                if (player.getLocation().getY() -2 > currentHeight) {
                     warningManager.setReddenPlayersScreen(plugin, player, this);
                 } else {
                    warningManager.setUnReddenPlayersScreen(plugin, player, this);
