@@ -1,3 +1,19 @@
+Version is 1.20.1 now
+
+Changes: 
+- Only "/hb setup y-level" in use; upward border closes in 5 blocks below that, downward border closes in 15 blocks above
+- Heightborder automatically picks the footprint of the normal worldborder (limited to 200 blocks)
+- Heightborder automatically scales down if the footprint of the normal worldborder decreases
+- High dense border gets displayed when the player is close to it
+- Grid of the border gets displayed for a bigger distance
+- Players now also receive the distance of the border in their warning (otherwise it's hard to tell how far away the border is while you're underground)
+- No particles in solid blocks (barely any particles for the upward border) --> client side mod that prevents particles from being rendered which aren't visible can reduce client lag by a lot more
+
+Changes were made to enable a bigger final fighting area (100x100) in my UHC (with the option to decrease the footprint at any point)
+
+Requires WorldBorderAPI 1.201.0
+
+////////////////////////////////////////////////////////////////////////////////////////////
 # HeightBorder
 Minecraft plugin that implements a world border that stops players from being too high. 
 
