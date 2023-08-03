@@ -380,6 +380,7 @@ public class Border implements ConfigurationSerializable {
             for (int z=startz; z < endz + stepz; z = z + stepz) {
 
                 //We don't need to render particles which we cant see
+                //further optimisation can be done with client side mods
                 if(world.getBlockAt(x, (int) Math.ceil(currentHeight), z).getType().isSolid()&&world.getBlockAt(x, (int) Math.floor(currentHeight), z).getType().isSolid()){
                     continue;
                 }
@@ -406,7 +407,7 @@ public class Border implements ConfigurationSerializable {
                                 1, dustOptions);
                     }*/
                 }else if((distance >=displayBorderDistance) && (distance < 10*displayBorderDistance)){
-                    if((x+10) % 20 == 0 || (z+10) % 20 == 0){
+                    if((((x+10) % 20 == 0)&&(z % 2 == 0)) || (((z+10) % 20 == 0)&&(x % 2 == 0))){
                         Location currentLoc = new Location(world, x, currentHeight, z);
                         // Only the same colour is used, because in testing this significantly reduced client side lag
                         // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
