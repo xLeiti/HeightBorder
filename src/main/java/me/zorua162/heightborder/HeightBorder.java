@@ -59,8 +59,8 @@ public final class HeightBorder extends JavaPlugin {
         config.addDefault("defaultDisplayBorderParticlesSetting", true);
         config.addDefault("damageWait", 20);
         config.addDefault("breakWait", 1);
-        config.addDefault("displayWait", 20);
-        config.addDefault("moveWait", 20);
+        config.addDefault("displayWait", 10);
+        config.addDefault("moveWait", 10);
         config.options().copyDefaults(true);
         saveConfig();
     }

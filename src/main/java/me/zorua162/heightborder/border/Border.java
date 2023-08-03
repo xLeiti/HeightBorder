@@ -180,8 +180,8 @@ public class Border implements ConfigurationSerializable {
         Boolean displayBorderParticles = null;
         int damageWait = 20;
         int breakWait = 20;
-        int displayWait = 20;
-        int moveWait = 20;
+        int displayWait = 10;
+        int moveWait = 10;
         Boolean stopped = null;
 
         int numberOfParticles = 100;
@@ -342,9 +342,9 @@ public class Border implements ConfigurationSerializable {
         if(size > 200)
             size = 200.0;
 
-        int startx = (int) Math.floor(-size);
+        int startx = (int) Math.floor(-size) -1;
         int endx = (int) Math.ceil(size);
-        int startz = (int) Math.floor(-size);
+        int startz = (int) Math.floor(-size) -1;
         int endz = (int) Math.ceil(size);
 
         if (!displayBorderParticles) {
@@ -388,12 +388,12 @@ public class Border implements ConfigurationSerializable {
                 //Drawing the dense border when the player is close
                 distance = Math.sqrt(Math.pow(x-player.getLocation().getX(),2)+Math.pow(z-player.getLocation().getZ(),2)+Math.pow(currentHeight-player.getLocation().getY(),2));
                 if(distance<displayBorderDistance){
-                    Location currentLoc = new Location(world, x, currentHeight, z);
+                    Location currentLoc = new Location(world, x+0.5, currentHeight, z+0.5);
                     // Only the same colour is used, because in testing this significantly reduced client side lag
                     // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
                     // Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 10.0F);
-                    Particle.DustOptions dustOptions = new Particle.DustOptions(particleColour, 4.0F);
-                    player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0.5, offset, 0.5,
+                    Particle.DustOptions dustOptions = new Particle.DustOptions(particleColour, 20.0F);
+                    player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0, 0, 0,
                             1, dustOptions);
 
                 //Drawing a rough grid when player is further away
@@ -409,12 +409,12 @@ public class Border implements ConfigurationSerializable {
                     }*/
                 }else if((distance >=displayBorderDistance) && (distance < 100)){
                     if((((x+10) % 20 == 0)&&(z % 2 == 0)) || (((z+10) % 20 == 0)&&(x % 2 == 0))){
-                        Location currentLoc = new Location(world, x, currentHeight, z);
+                        Location currentLoc = new Location(world, x+0.5, currentHeight, z+0.5);
                         // Only the same colour is used, because in testing this significantly reduced client side lag
                         // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
                         // Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 10.0F);
                         Particle.DustOptions dustOptions = new Particle.DustOptions(particleColour, 20.0F);
-                        player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0.5, offset, 0.5,
+                        player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0, 0, 0,
                                 1, dustOptions);
                     }
                 }
@@ -471,10 +471,11 @@ public class Border implements ConfigurationSerializable {
     public Boolean checkOutsideBorder(Player player) {
         // Check if the player should be damaged or not
         if (direction.equals("down")) {
-            return player.getLocation().getY() - 2 > currentHeight;
+            //Eyelocation because sneaking and crawling affects the distance
+            return player.getEyeLocation().getY() + 0.25 > currentHeight;
         } else {
             //Playerfeet
-            return player.getLocation().getY() - 1 < currentHeight;
+            return player.getLocation().getY()  < currentHeight;
 
         }
     }
