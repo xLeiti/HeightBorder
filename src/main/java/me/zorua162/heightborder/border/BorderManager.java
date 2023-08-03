@@ -239,7 +239,10 @@ public class BorderManager {
         int bottomBorderVelocity = (int) ((bottomEndHeight - bottomStartHeight )/timeToFinish);
 
         Double distance = player.getWorld().getWorldBorder().getSize()/2;
-        player.sendMessage("the size is:"+ distance);
+        //just to make sure it doesn't scan the entire world in case there isn't a worldborder setup.
+        if(distance > 200)
+            distance = 200.0;
+        player.sendMessage("The border size is:"+ distance);
         Location flpos = new Location(player.getWorld(), -distance, topStartHeight, distance);
         Location brpos = new Location(player.getWorld(), distance, bottomStartHeight, -distance);
 

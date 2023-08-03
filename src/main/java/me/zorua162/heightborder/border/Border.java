@@ -336,6 +336,11 @@ public class Border implements ConfigurationSerializable {
         List<Integer> borders = getBorders();
 
         Double size = player.getWorld().getWorldBorder().getSize()/2;
+
+        //just to make sure it doesn't scan the entire world in case there isn't a worldborder setup.
+        if(size > 200)
+            size = 200.0;
+
         int startx = (int) Math.floor(-size);
         int endx = (int) Math.ceil(size);
         int startz = (int) Math.floor(-size);
@@ -345,7 +350,7 @@ public class Border implements ConfigurationSerializable {
             return;
         }
 
-        if(!player.getWorld().getName().equals("world")){
+        if(!player.getWorld().equals(pos1.getWorld())){
             return;
         }
 
@@ -354,6 +359,13 @@ public class Border implements ConfigurationSerializable {
         if (currentHeight < -200) {
             return;
         }
+
+        double offset = 0.5;
+        /*if(direction.equals("down")){
+            offset = 2.5;
+        }else if(direction.equals("up")){
+            offset = 0.5;
+        }*/
 
         World world = pos1.getWorld();
         // Only this set number of particles is created to reduce client lag
@@ -379,7 +391,7 @@ public class Border implements ConfigurationSerializable {
                     // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
                     // Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 10.0F);
                     Particle.DustOptions dustOptions = new Particle.DustOptions(particleColour, 4.0F);
-                    player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0.5, 0, 0.5,
+                    player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0.5, offset, 0.5,
                             1, dustOptions);
 
                 //Drawing a rough grid when player is further away
@@ -400,7 +412,7 @@ public class Border implements ConfigurationSerializable {
                         // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
                         // Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 10.0F);
                         Particle.DustOptions dustOptions = new Particle.DustOptions(particleColour, 20.0F);
-                        player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0.5, 0, 0.5,
+                        player.spawnParticle(Particle.REDSTONE , currentLoc, 1, 0.5, offset, 0.5,
                                 1, dustOptions);
                     }
                 }
@@ -457,9 +469,11 @@ public class Border implements ConfigurationSerializable {
     public Boolean checkOutsideBorder(Player player) {
         // Check if the player should be damaged or not
         if (direction.equals("down")) {
-            return player.getLocation().getY() + 1 > currentHeight;
+            return player.getLocation().getY() - 2 > currentHeight;
         } else {
+            //Playerfeet
             return player.getLocation().getY() - 1 < currentHeight;
+
         }
     }
 
