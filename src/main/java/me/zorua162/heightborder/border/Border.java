@@ -361,12 +361,12 @@ public class Border implements ConfigurationSerializable {
             return;
         }
 
-        double offset = 0.5;
-        /*if(direction.equals("down")){
-            offset = 2.5;
+        double offset = 0;
+        if(direction.equals("down")){
+            offset = 0.25;
         }else if(direction.equals("up")){
-            offset = 0.5;
-        }*/
+            offset = -0.25;
+        }
 
         World world = pos1.getWorld();
         // Only this set number of particles is created to reduce client lag
@@ -388,7 +388,7 @@ public class Border implements ConfigurationSerializable {
                 //Drawing the dense border when the player is close
                 distance = Math.sqrt(Math.pow(x-player.getLocation().getX(),2)+Math.pow(z-player.getLocation().getZ(),2)+Math.pow(currentHeight-player.getLocation().getY(),2));
                 if(distance<displayBorderDistance){
-                    Location currentLoc = new Location(world, x+0.5, currentHeight, z+0.5);
+                    Location currentLoc = new Location(world, x+0.5, currentHeight+offset, z+0.5);
                     // Only the same colour is used, because in testing this significantly reduced client side lag
                     // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
                     // Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 10.0F);
@@ -409,7 +409,7 @@ public class Border implements ConfigurationSerializable {
                     }*/
                 }else if((distance >=displayBorderDistance) && (distance < 100)){
                     if((((x+10) % 20 == 0)&&(z % 2 == 0)) || (((z+10) % 20 == 0)&&(x % 2 == 0))){
-                        Location currentLoc = new Location(world, x+0.5, currentHeight, z+0.5);
+                        Location currentLoc = new Location(world, x+0.5, currentHeight+offset, z+0.5);
                         // Only the same colour is used, because in testing this significantly reduced client side lag
                         // Particle.DustTransition dustOptions = new Particle.DustTransition(Color.fromRGB(255, 0, 0), Color.fromRGB(255, 0, 0), 10.0F);
                         // Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 10.0F);
@@ -489,7 +489,8 @@ public class Border implements ConfigurationSerializable {
         List<Player> players = pos1.getWorld().getPlayers();
         for (Player player: players) {
             if (checkOutsideBorder(player)) {
-                player.damage(0.5, player);
+                //having random knockback is annyoing, hence no damage source
+                player.damage(1);
             }
         }
     }
